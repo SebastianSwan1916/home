@@ -15,32 +15,42 @@
         body { 
             margin: 0; 
             min-height: 100vh;
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); /* Dark gradient for glass contrast */
-            color: #f0f0f0; /* Light text for readability */
+            /* ===== FIXED FULL-SCREEN BACKGROUND IMAGE (YOUR CUSTOM IMAGE) ===== */
+            background-image: url('YOUR_IMAGE_URL_HERE'); /* REPLACE THIS WITH YOUR IMAGE PATH/URL */
+            background-attachment: fixed; /* Critical: Image stays STATIC (no scroll with page) */
+            background-size: cover; /* Critical: Cover ENTIRE page, no white space */
+            background-position: center center; /* Center image on all screen sizes */
+            background-repeat: no-repeat; /* No image repetition */
+            background-color: #1a1a2e; /* Fallback color if image fails to load */
+            /* ===== END BACKGROUND IMAGE STYLES ===== */
+            color: #f0f0f0; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding-top: 100px; /* Increased space for fixed nav (matches nav height + margin) */
+            padding-top: 100px; /* Space for fixed glass nav bar */
             overflow-x: hidden;
         }
 
         h1, h2 {
             color: #ffffff;
             margin-bottom: 1rem;
-            text-align: center; /* Center main title for better visual balance */
+            text-align: center;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.7); /* Add text shadow for readability on image */
         }
 
         h1 {
-            margin-top: 1rem; /* Add top margin to main title */
+            margin-top: 1rem;
         }
 
         p {
             line-height: 1.6;
             margin-bottom: 1rem;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.6); /* Readability shadow for paragraph text */
         }
 
         a {
             color: #a0d2eb;
             text-decoration: none;
             transition: color 0.2s ease;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
         }
 
         a:hover {
@@ -52,9 +62,9 @@
             background: hsl(0 0% 0% / var(--glass-frost, 0));
             -webkit-backdrop-filter: var(--filter-id,url(#glass-filter)) saturate(var(--glass-saturation,1));
             backdrop-filter: var(--filter-id, url(#glass-filter)) saturate(var(--glass-saturation, 1));
-            box-shadow: inset 0 0 2px 1px #ffffff59, inset 0 0 10px 4px #ffffff26, inset 0 4px 16px #1111a03d, inset 0 8px 24px #1111a03d, inset 0 6px 56px #1111a03d; /* Fixed opacity value (typo fix) */
+            box-shadow: inset 0 0 2px 1px #ffffff59, inset 0 0 10px 4px #ffffff26, inset 0 4px 16px #1111a03d, inset 0 8px 24px #1111a03d, inset 0 6px 56px #1111a03d;
             box-shadow: inset 0 0 2px 1px lab(100% 0 0 / .35), inset 0 0 10px 4px lab(100% 0 0 / .15), inset 0 4px 16px lab(5.32203% 1.61424 -5.88284 / .0509804), inset 0 8px 24px lab(5.32203% 1.61424 -5.88284 / .0509804), inset 0 6px 56px lab(5.32203% 1.61424 -5.88284 / .0509804);
-            border-radius: 16px; /* Rounded corners for content containers */
+            border-radius: 16px;
             position: relative;
             pointer-events: auto;
             border: none;
@@ -79,38 +89,36 @@
             pointer-events: none;
         }
 
-        /* ===== NAVIGATION (LIQUID GLASS STYLE) ===== */
+        /* ===== NAVIGATION (LIQUID GLASS STYLE - FIT-TO-TEXT, FIXED TOP) ===== */
         header {
             position: fixed;
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 999;
-            width: auto; /* Critical: ensures nav only fits content width */
-            margin: 0; /* Remove default margin to prevent misalignment */
+            width: auto;
+            margin: 0;
         }
 
-        /* Glass nav container (fit-to-text with proper spacing) */
         nav.glass {
             height: 70px;
-            display: inline-flex; /* Ensures nav fits content (not full width) */
+            display: inline-flex; /* Fit nav to text/content (no full-width stretch) */
             justify-content: center;
             align-items: center;
             gap: 2.5rem; /* Spacing between nav items */
-            padding: 0 2.5rem; /* Horizontal padding for internal spacing */
+            padding: 0 2.5rem; /* Internal spacing */
             --glass-frost: 0.12;
             --glass-saturation: 1.4;
-            border-radius: 9999px; /* Full rounded for nav bar */
-            white-space: nowrap; /* Prevent nav items wrapping on small screens */
+            border-radius: 9999px; /* Full rounded nav */
+            white-space: nowrap; /* Prevent nav item wrapping */
         }
 
-        /* Nav list styling */
         .nav {
             list-style: none;
-            margin: 0; /* Remove default margin */
-            padding: 0; /* Remove default padding */
+            margin: 0;
+            padding: 0;
             display: flex;
-            gap: 2.5rem; /* Match gap with nav container for consistency */
+            gap: 2.5rem;
         }
 
         .inline-items {
@@ -118,12 +126,11 @@
         }
 
         .inline-items li {
-            margin: 0; /* Remove all default margins */
-            border: none !important; /* Remove default border */
-            padding: 0 !important; /* Remove default padding */
+            margin: 0;
+            border: none !important;
+            padding: 0 !important;
         }
 
-        /* Nav links styling */
         nav a {
             background: none;
             border: none;
@@ -133,25 +140,25 @@
             cursor: pointer;
             transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
             transform-origin: center;
-            padding: 0.5rem 0; /* Vertical padding for clickable area */
-            display: inline-block; /* Ensure consistent hover area */
+            padding: 0.5rem 0;
+            display: inline-block;
+            text-shadow: none; /* No shadow for nav links (glass contrast is enough) */
         }
 
         nav a:hover {
             color: #f0f0f0;
-            transform: scale(1.08); /* Tiny magnify effect */
+            transform: scale(1.08);
             text-decoration: none;
         }
 
         /* ===== TWO-COLUMN LAYOUT (RESPONSIVE) ===== */
         .columnsContainer { 
             position: relative; 
-            margin: 1rem auto; /* Center container and add vertical margin */
-            max-width: 1200px; /* Limit max width for large screens */
-            padding: 0 1rem; /* Add horizontal padding for small screens */
+            margin: 1rem auto;
+            max-width: 1200px;
+            padding: 0 1rem;
         }
 
-        /* Glass styling for content columns */
         .leftColumn, .rightColumn {  
             padding: 1.25em;
             --glass-frost: 0.08;
@@ -159,47 +166,47 @@
         }
 
         .leftColumn { 
-            margin-bottom: 1rem; /* Increased margin for better spacing */
+            margin-bottom: 1rem;
         }
 
-        /* Footer glass styling */
+        /* ===== GLASS FOOTER ===== */
         footer.glass {
             border-radius: 16px;
-            margin: 2rem auto; /* Center footer and add top margin */
+            margin: 2rem auto;
             text-align: center;
             padding: 1.5rem;
-            max-width: 1200px; /* Match column container max width */
+            max-width: 1200px;
         }
 
-        /* MEDIA QUERIES (improved responsive behavior) */
+        /* ===== MEDIA QUERIES (RESPONSIVE ADJUSTMENTS) ===== */
         @media screen and (min-width: 47.5em) {
             .leftColumn { 
                 margin-right: 19.5em; 
-                margin-bottom: 0; /* Remove bottom margin on large screens */
+                margin-bottom: 0;
             }
 
             .rightColumn { 
                 position: absolute; 
                 top: 0; 
-                right: 1rem; /* Adjust for container padding */
+                right: 1rem; 
                 width: 18.75em; 
-                height: 100%; /* Match left column height */
+                height: 100%;
             }   
         }
 
-        /* Fix small screen nav spacing */
         @media screen and (max-width: 47.4em) {
             nav.glass {
-                gap: 1.5rem; /* Reduce gap on mobile */
-                padding: 0 1.5rem; /* Reduce padding on mobile */
+                gap: 1.5rem;
+                padding: 0 1.5rem;
             }
-            
             .nav {
-                gap: 1.5rem; /* Match nav gap */
+                gap: 1.5rem;
             }
-
             nav a {
-                font-size: 1rem; /* Slightly smaller font on mobile */
+                font-size: 1rem;
+            }
+            h1 {
+                font-size: 1.8rem; /* Smaller title on mobile for readability */
             }
         }
     </style>
@@ -215,9 +222,9 @@
         </filter>
     </svg>
 
-    <h1>Responsive Two Column Layout (Left Column Fluid + Liquid Glass Nav)</h1>
+    <h1>Responsive Two Column Layout (Liquid Glass Nav + Fixed Background)</h1>
     
-    <!-- Liquid Glass Nav Bar (fixed top, fit-to-text) -->
+    <!-- Liquid Glass Nav (Fit-to-Text, Fixed Top) -->
     <header>
         <nav class="glass">
             <div class="glass-surface__filter"></div>
@@ -230,30 +237,29 @@
         </nav>
     </header>
 
-    <!-- Two-Column Layout (with glass styling for content containers) -->
+    <!-- Two-Column Glass Layout -->
     <div class="columnsContainer">
         <div class="leftColumn glass">
             <div class="glass-surface__filter"></div>
-            <h2>Left Column (fluid)</h2>
-            <p>Bacon ipsum dolor sit amet capicola ball tip beef ribs leberkas, turkey biltong salami shoulder ribeye. Leberkas chuck cow andouille kevin ribeye pork strip steak pork chop beef ribs beef ball tip corned beef. Leberkas prosciutto brisket, short ribs salami cow sirloin chicken. Bacon pork belly bresaola tenderloin biltong leberkas. Strip steak beef leberkas sirloin, venison turkey hamburger kevin. Drumstick chicken ground round t-bone flank fatback jerky ball tip. Jerky ribeye sirloin t-bone.</p>
-            <p>Tongue prosciutto pork ball tip ham hock, meatball sirloin brisket kielbasa biltong doner shoulder bresaola. Chuck beef ribs biltong, kielbasa ground round swine andouille corned beef. Venison hamburger tongue shank. Leberkas doner pork chop sausage kielbasa pancetta, biltong brisket pastrami tenderloin boudin filet mignon sirloin cow meatloaf. Ham ball tip bacon pork belly sirloin.</p>
-            <p>Shoulder pig short ribs, salami chicken venison bresaola. Frankfurter meatball pork chop pork loin, turkey strip steak kielbasa pork belly drumstick shank prosciutto. Pork chicken ground round, sirloin tri-tip ham hock pork chop cow meatloaf pork loin bresaola turkey. Prosciutto hamburger pork short ribs flank tri-tip chicken pig bacon meatloaf t-bone shankle doner. Bresaola doner spare ribs biltong jowl boudin, tri-tip pork leberkas ham hock filet mignon.</p>
-            <p>Leberkas strip steak shoulder meatball, flank biltong shank fatback ball tip swine prosciutto hamburger. Jerky frankfurter drumstick, ham ham hock hamburger kevin kielbasa salami chuck. Flank rump beef cow, beef ribs meatball ball tip jowl bacon pork chop. Biltong tongue pork chop hamburger. Frankfurter tri-tip pancetta pork chop venison t-bone andouille beef ribs salami boudin meatball doner spare ribs. Brisket pork chop pig kielbasa jerky chuck pork belly beef meatball boudin short loin. Doner jerky andouille ham meatloaf prosciutto kevin pork belly short loin pancetta.</p>
-            <p>Corned beef spare ribs hamburger pork tenderloin flank pork loin beef ribs sausage brisket chicken venison bacon short loin sirloin. Ribeye tail short ribs andouille kevin chicken shankle meatloaf, corned beef rump sirloin t-bone chuck tongue. Swine venison tongue, sirloin turducken drumstick bresaola strip steak rump. Kevin ham hock meatball tri-tip. Ground round leberkas pig beef salami strip steak meatball beef ribs. Chicken ball tip rump, short loin bresaola pork t-bone jerky jowl pork chop tail chuck sausage prosciutto.</p>
+            <h2>Left Column (Fluid)</h2>
+            <p>Bacon ipsum dolor sit amet capicola ball tip beef ribs leberkas, turkey biltong salami shoulder ribeye. Leberkas chuck cow andouille kevin ribeye pork strip steak pork chop beef ribs beef ball tip corned beef. Leberkas prosciutto brisket, short ribs salami cow sirloin chicken. Bacon pork belly bresaola tenderloin biltong leberkas.</p>
+            <p>Tongue prosciutto pork ball tip ham hock, meatball sirloin brisket kielbasa biltong doner shoulder bresaola. Chuck beef ribs biltong, kielbasa ground round swine andouille corned beef. Venison hamburger tongue shank. Leberkas doner pork chop sausage kielbasa pancetta, biltong brisket pastrami tenderloin boudin filet mignon sirloin cow meatloaf.</p>
+            <p>Shoulder pig short ribs, salami chicken venison bresaola. Frankfurter meatball pork chop pork loin, turkey strip steak kielbasa pork belly drumstick shank prosciutto. Pork chicken ground round, sirloin tri-tip ham hock pork chop cow meatloaf pork loin bresaola turkey. Prosciutto hamburger pork short ribs flank tri-tip chicken pig bacon meatloaf t-bone shankle doner.</p>
         </div>
 
         <div class="rightColumn glass">
             <div class="glass-surface__filter"></div>
             <h2>Right Column</h2>
-            <p>Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit​​, morbo vel maleficia? De apocalypsi gorger omero undead survivor dictum mauris. Hi mindless mortuis soulless creaturas, imo evil stalking monstra adventus resi dentevil vultus comedat cerebella viventium. Qui animated corpse, cricket bat max brucks terribilem incessu zomby. The voodoo sacerdos flesh eater, suscitat mortuos comedere carnem virus. Zonbi tattered for solum oculi eorum defunctis go lum cerebro. Nescio brains an Undead zombies. Sicut malus putrid voodoo horror. Nigh tofth eliv ingdead.</p>
+            <p>Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit​​, morbo vel maleficia? De apocalypsi gorger omero undead survivor dictum mauris. Hi mindless mortuis soulless creaturas, imo evil stalking monstra adventus resi dentevil vultus comedat cerebella viventium.</p>
+            <p>Qui animated corpse, cricket bat max brucks terribilem incessu zomby. The voodoo sacerdos flesh eater, suscitat mortuos comedere carnem virus. Zonbi tattered for solum oculi eorum defunctis go lum cerebro. Nescio brains an Undead zombies. Sicut malus putrid voodoo horror.</p>
         </div>
     </div>
     
-    <!-- Glass-styled Footer -->
+    <!-- Glass Footer -->
     <footer class="glass">
         <div class="glass-surface__filter"></div>
         <p><a href="#">Contact Us</a> | <a href="#">Sitemap</a> | <a href="#">Privacy Policy</a></p>
-        <p>&copy;2014 Copyright info here...</p>
+        <p>&copy; 2025 Your Site Name | All Rights Reserved</p>
     </footer>
 </body>
 </html>
