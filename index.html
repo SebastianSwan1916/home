@@ -3,13 +3,164 @@
 
   <head>
     <meta charset="UTF-8">
-    <title>Untitled</title>
+    <title>Sebastian's Website/Blog😭</title>
     
 
   </head>
     
   <body>
   <!-- this is a html -->
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liquid Glass Buttons (Unified Class)</title>
+    <style>
+        /* Base Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient();
+            overflow-x: hidden;
+        }
+
+        /* ✅ UNIVERSAL LIQUID GLASS BUTTON CLASS - Add .button to ANY element for glass effect */
+        .button {
+            background: hsl(0 0% 0% / var(--glass-frost, 0));
+            -webkit-backdrop-filter: var(--filter-id,url(#glass-filter))saturate(var(--glass-saturation,1));
+            backdrop-filter: var(--filter-id, url(#glass-filter)) saturate(var(--glass-saturation, 1));
+            box-shadow: inset 0 0 2px 1px #ffffff59, inset 0 0 10px 4px #ffffff26, inset 0 4px 16px #1111a0d, inset 0 8px 24px #1111a0d, inset 0 6px 56px #1111a0d;
+            box-shadow: inset 0 0 2px 1px lab(100% 0 0 / .35), inset 0 0 10px 4px lab(100% 0 0 / .15), inset 0 4px 16px lab(5.32203% 1.61424 -5.88284 / .0509804), inset 0 8px 24px lab(5.32203% 1.61424 -5.88284 / .0509804), inset 0 6px 56px lab(5.32203% 1.61424 -5.88284 / .0509804);
+            border-radius: 9999px;
+            position: relative;
+            pointer-events: auto; /* Ensure clickability */
+            border: none; /* Remove default button border */
+        }
+
+        /* ✅ Glass filter helper (required for liquid glass effect) */
+        .glass-surface__filter{
+            pointer-events: none;
+            opacity: 0;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            inset: 0;
+        }
+
+        /* ✅ FIXED TOP NAV BAR - Fit-to-Text + Liquid Glass (uses .button class) */
+        .top-nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+            width: auto;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2.5rem;
+            padding: 0 2.5rem;
+            --glass-frost: 0.12;
+            --glass-saturation: 1.4;
+        }
+
+        /* ✅ BORDERLESS NAV BUTTONS + SUBTLE MAGNIFY HOVER (NO glass effect - plain text) */
+        .nav-btn {
+            background: none;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+            transform-origin: center;
+        }
+        .nav-btn:hover {
+            color: #f0f0f0;
+            transform: scale(1.08); /* Tiny center magnify effect */
+        }
+
+        /* ✅ CENTRAL BUTTONS WRAPPER - Only for positioning/spacing (no glass effect) */
+        .central-buttons {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            display: flex;
+            gap: 1.5rem; /* Spacing between glass buttons */
+        }
+
+        /* ✅ STANDALONE CENTRAL BUTTONS - Uses .button class for liquid glass effect */
+        .central-btn {
+            color: #ffffff;
+            font-size: 1rem;
+            padding: 0.9rem 1.8rem;
+            cursor: pointer;
+            --glass-frost: 0.08;
+            --glass-saturation: 1.2;
+            transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+        }
+        .central-btn:hover {
+            transform: translateY(-3px) scale(1.03); /* Subtle lift + tiny magnify */
+            background: hsl(0 0% 100% / 0.05); /* Slight lighten on hover */
+        }
+
+        /* ✅ MANDATORY SVG FILTER - Powers Liquid Glass Effect (DO NOT REMOVE) */
+        svg {
+            position: absolute;
+            width: 0;
+            height: 0;
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- SVG Filter for Liquid Glass Effect (REQUIRED) -->
+    <svg>
+        <filter id="glass-filter">
+            <feGaussianBlur stdDeviation="8" result="blur" />
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 18 -7" result="glass" />
+            <feComposite in="SourceGraphic" in2="glass" operator="over" />
+        </filter>
+    </svg>
+
+    <!-- Fixed Top Nav Bar: Uses .button class for liquid glass effect -->
+    <div class="top-nav button">
+        <div class="glass-surface__filter"></div>
+        <button class="nav-btn">Home</button>
+        <button class="nav-btn">About</button>
+        <button class="nav-btn">Services</button>
+        <button class="nav-btn">Contact</button>
+    </div>
+
+    <!-- Standalone Central Buttons: Each uses .button class for liquid glass effect -->
+    <div class="central-buttons">
+        <button class="central-btn button">
+            <div class="glass-surface__filter"></div>
+            Start Now
+        </button>
+        <button class="central-btn button">
+            <div class="glass-surface__filter"></div>
+            Learn More
+        </button>
+    </div>
+
+    <!-- Example: Add ANY element with .button class to get liquid glass effect -->
+    <!-- <button class="button" style="position: fixed; bottom: 20px; right: 20px; padding: 0.8rem 1.5rem; color: white;">New Glass Button</button> -->
+</body>
+</html>
     
   </body>
   
