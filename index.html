@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Responsive Two Column Layout (Left Column Fluid + Liquid Glass Nav)</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liquid Glass Two-Column Layout</title>
     <style>
         /* ===== BASE RESET + GLOBAL STYLES ===== */
         *, *:before, *:after {
@@ -19,13 +18,18 @@
             background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); /* Dark gradient for glass contrast */
             color: #f0f0f0; /* Light text for readability */
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding-top: 90px; /* Space for fixed glass nav bar */
+            padding-top: 100px; /* Increased space for fixed nav (matches nav height + margin) */
             overflow-x: hidden;
         }
 
         h1, h2 {
             color: #ffffff;
             margin-bottom: 1rem;
+            text-align: center; /* Center main title for better visual balance */
+        }
+
+        h1 {
+            margin-top: 1rem; /* Add top margin to main title */
         }
 
         p {
@@ -44,20 +48,18 @@
         }
 
         /* ===== LIQUID GLASS CORE STYLES ===== */
-        /* Universal glass class (apply to any element for liquid glass effect) */
         .glass {
             background: hsl(0 0% 0% / var(--glass-frost, 0));
-            -webkit-backdrop-filter: var(--filter-id,url(#glass-filter))saturate(var(--glass-saturation,1));
+            -webkit-backdrop-filter: var(--filter-id,url(#glass-filter)) saturate(var(--glass-saturation,1));
             backdrop-filter: var(--filter-id, url(#glass-filter)) saturate(var(--glass-saturation, 1));
-            box-shadow: inset 0 0 2px 1px #ffffff59, inset 0 0 10px 4px #ffffff26, inset 0 4px 16px #1111a0d, inset 0 8px 24px #1111a0d, inset 0 6px 56px #1111a0d;
+            box-shadow: inset 0 0 2px 1px #ffffff59, inset 0 0 10px 4px #ffffff26, inset 0 4px 16px #1111a03d, inset 0 8px 24px #1111a03d, inset 0 6px 56px #1111a03d; /* Fixed opacity value (typo fix) */
             box-shadow: inset 0 0 2px 1px lab(100% 0 0 / .35), inset 0 0 10px 4px lab(100% 0 0 / .15), inset 0 4px 16px lab(5.32203% 1.61424 -5.88284 / .0509804), inset 0 8px 24px lab(5.32203% 1.61424 -5.88284 / .0509804), inset 0 6px 56px lab(5.32203% 1.61424 -5.88284 / .0509804);
-            border-radius: 16px; /* Rounded corners (softer than 9999px for content containers) */
+            border-radius: 16px; /* Rounded corners for content containers */
             position: relative;
             pointer-events: auto;
             border: none;
         }
 
-        /* Glass filter helper (required for liquid glass effect) */
         .glass-surface__filter {
             pointer-events: none;
             opacity: 0;
@@ -84,30 +86,31 @@
             left: 50%;
             transform: translateX(-50%);
             z-index: 999;
-            width: auto;
+            width: auto; /* Critical: ensures nav only fits content width */
+            margin: 0; /* Remove default margin to prevent misalignment */
         }
 
-        /* Glass nav container (fit-to-text) */
+        /* Glass nav container (fit-to-text with proper spacing) */
         nav.glass {
             height: 70px;
-            display: flex;
+            display: inline-flex; /* Ensures nav fits content (not full width) */
             justify-content: center;
             align-items: center;
-            gap: 2.5rem;
-            padding: 0 2.5rem;
+            gap: 2.5rem; /* Spacing between nav items */
+            padding: 0 2.5rem; /* Horizontal padding for internal spacing */
             --glass-frost: 0.12;
             --glass-saturation: 1.4;
             border-radius: 9999px; /* Full rounded for nav bar */
+            white-space: nowrap; /* Prevent nav items wrapping on small screens */
         }
 
-        /* Default nav styles override */
+        /* Nav list styling */
         .nav {
             list-style: none;
-            margin-left: 0;
-            margin-bottom: 0;
-            padding-left: 0;
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
             display: flex;
-            gap: 2.5rem;
+            gap: 2.5rem; /* Match gap with nav container for consistency */
         }
 
         .inline-items {
@@ -115,12 +118,12 @@
         }
 
         .inline-items li {
-            margin-left: 0;
+            margin: 0; /* Remove all default margins */
             border: none !important; /* Remove default border */
-            padding: 0 !important;
+            padding: 0 !important; /* Remove default padding */
         }
 
-        /* Borderless nav links with subtle magnify hover */
+        /* Nav links styling */
         nav a {
             background: none;
             border: none;
@@ -130,7 +133,8 @@
             cursor: pointer;
             transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
             transform-origin: center;
-            padding: 0.5rem 0;
+            padding: 0.5rem 0; /* Vertical padding for clickable area */
+            display: inline-block; /* Ensure consistent hover area */
         }
 
         nav a:hover {
@@ -140,42 +144,63 @@
         }
 
         /* ===== TWO-COLUMN LAYOUT (RESPONSIVE) ===== */
-        .columnsContainer, footer, header { 
+        .columnsContainer { 
             position: relative; 
-            margin: .5em; 
+            margin: 1rem auto; /* Center container and add vertical margin */
+            max-width: 1200px; /* Limit max width for large screens */
+            padding: 0 1rem; /* Add horizontal padding for small screens */
         }
 
         /* Glass styling for content columns */
-        .leftColumn, .rightColumn, footer {  
+        .leftColumn, .rightColumn {  
             padding: 1.25em;
             --glass-frost: 0.08;
             --glass-saturation: 1.2;
         }
 
         .leftColumn { 
-            margin-bottom: .5em; 
+            margin-bottom: 1rem; /* Increased margin for better spacing */
         }
 
         /* Footer glass styling */
         footer.glass {
             border-radius: 16px;
-            margin-top: 2rem;
+            margin: 2rem auto; /* Center footer and add top margin */
             text-align: center;
             padding: 1.5rem;
+            max-width: 1200px; /* Match column container max width */
         }
 
-        /* MEDIA QUERIES (preserve original responsive behavior) */
+        /* MEDIA QUERIES (improved responsive behavior) */
         @media screen and (min-width: 47.5em) {
             .leftColumn { 
                 margin-right: 19.5em; 
+                margin-bottom: 0; /* Remove bottom margin on large screens */
             }
 
             .rightColumn { 
                 position: absolute; 
                 top: 0; 
-                right: 0; 
+                right: 1rem; /* Adjust for container padding */
                 width: 18.75em; 
+                height: 100%; /* Match left column height */
             }   
+        }
+
+        /* Fix small screen nav spacing */
+        @media screen and (max-width: 47.4em) {
+            nav.glass {
+                gap: 1.5rem; /* Reduce gap on mobile */
+                padding: 0 1.5rem; /* Reduce padding on mobile */
+            }
+            
+            .nav {
+                gap: 1.5rem; /* Match nav gap */
+            }
+
+            nav a {
+                font-size: 1rem; /* Slightly smaller font on mobile */
+            }
         }
     </style>
 </head>
