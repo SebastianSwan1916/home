@@ -1,46 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Sebastian's Website/Blog😭</title>
-    
-
-  </head>
-    
-  <body>
-  <!-- this is a html -->
-
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Responsive Two Column Layout (Left Column Fluid + Liquid Glass Nav)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        /* Base Reset */
-        * {
-            margin: 0;
-            padding: 0;
+        /* ===== BASE RESET + GLOBAL STYLES ===== */
+        *, *:before, *:after {
+            -moz-box-sizing: border-box; 
+            -webkit-box-sizing: border-box; 
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        body {
+        body { 
+            margin: 0; 
             min-height: 100vh;
-            background: linear-gradient();
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); /* Dark gradient for glass contrast */
+            color: #f0f0f0; /* Light text for readability */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-top: 90px; /* Space for fixed glass nav bar */
             overflow-x: hidden;
         }
 
-        /* ✅ UNIVERSAL LIQUID GLASS BUTTON CLASS - Add .button to ANY element for glass effect */
-        .button {
+        h1, h2 {
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: #a0d2eb;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: #ffffff;
+        }
+
+        /* ===== LIQUID GLASS CORE STYLES ===== */
+        /* Universal glass class (apply to any element for liquid glass effect) */
+        .glass {
             background: hsl(0 0% 0% / var(--glass-frost, 0));
             -webkit-backdrop-filter: var(--filter-id,url(#glass-filter))saturate(var(--glass-saturation,1));
             backdrop-filter: var(--filter-id, url(#glass-filter)) saturate(var(--glass-saturation, 1));
             box-shadow: inset 0 0 2px 1px #ffffff59, inset 0 0 10px 4px #ffffff26, inset 0 4px 16px #1111a0d, inset 0 8px 24px #1111a0d, inset 0 6px 56px #1111a0d;
             box-shadow: inset 0 0 2px 1px lab(100% 0 0 / .35), inset 0 0 10px 4px lab(100% 0 0 / .15), inset 0 4px 16px lab(5.32203% 1.61424 -5.88284 / .0509804), inset 0 8px 24px lab(5.32203% 1.61424 -5.88284 / .0509804), inset 0 6px 56px lab(5.32203% 1.61424 -5.88284 / .0509804);
-            border-radius: 9999px;
+            border-radius: 16px; /* Rounded corners (softer than 9999px for content containers) */
             position: relative;
-            pointer-events: auto; /* Ensure clickability */
-            border: none; /* Remove default button border */
+            pointer-events: auto;
+            border: none;
         }
 
-        /* ✅ Glass filter helper (required for liquid glass effect) */
-        .glass-surface__filter{
+        /* Glass filter helper (required for liquid glass effect) */
+        .glass-surface__filter {
             pointer-events: none;
             opacity: 0;
             z-index: -1;
@@ -50,14 +68,27 @@
             inset: 0;
         }
 
-        /* ✅ FIXED TOP NAV BAR - Fit-to-Text + Liquid Glass (uses .button class) */
-        .top-nav {
+        /* ===== MANDATORY SVG FILTER (POWERS LIQUID GLASS) ===== */
+        svg {
+            position: absolute;
+            width: 0;
+            height: 0;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* ===== NAVIGATION (LIQUID GLASS STYLE) ===== */
+        header {
             position: fixed;
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 999;
             width: auto;
+        }
+
+        /* Glass nav container (fit-to-text) */
+        nav.glass {
             height: 70px;
             display: flex;
             justify-content: center;
@@ -66,10 +97,31 @@
             padding: 0 2.5rem;
             --glass-frost: 0.12;
             --glass-saturation: 1.4;
+            border-radius: 9999px; /* Full rounded for nav bar */
         }
 
-        /* ✅ BORDERLESS NAV BUTTONS + SUBTLE MAGNIFY HOVER (NO glass effect - plain text) */
-        .nav-btn {
+        /* Default nav styles override */
+        .nav {
+            list-style: none;
+            margin-left: 0;
+            margin-bottom: 0;
+            padding-left: 0;
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .inline-items {
+            margin-top: 0;
+        }
+
+        .inline-items li {
+            margin-left: 0;
+            border: none !important; /* Remove default border */
+            padding: 0 !important;
+        }
+
+        /* Borderless nav links with subtle magnify hover */
+        nav a {
             background: none;
             border: none;
             outline: none;
@@ -78,84 +130,105 @@
             cursor: pointer;
             transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
             transform-origin: center;
+            padding: 0.5rem 0;
         }
-        .nav-btn:hover {
+
+        nav a:hover {
             color: #f0f0f0;
-            transform: scale(1.08); /* Tiny center magnify effect */
+            transform: scale(1.08); /* Tiny magnify effect */
+            text-decoration: none;
         }
 
-        /* ✅ CENTRAL BUTTONS WRAPPER - Only for positioning/spacing (no glass effect) */
-        .central-buttons {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-            display: flex;
-            gap: 1.5rem; /* Spacing between glass buttons */
+        /* ===== TWO-COLUMN LAYOUT (RESPONSIVE) ===== */
+        .columnsContainer, footer, header { 
+            position: relative; 
+            margin: .5em; 
         }
 
-        /* ✅ STANDALONE CENTRAL BUTTONS - Uses .button class for liquid glass effect */
-        .central-btn {
-            color: #ffffff;
-            font-size: 1rem;
-            padding: 0.9rem 1.8rem;
-            cursor: pointer;
+        /* Glass styling for content columns */
+        .leftColumn, .rightColumn, footer {  
+            padding: 1.25em;
             --glass-frost: 0.08;
             --glass-saturation: 1.2;
-            transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
-        }
-        .central-btn:hover {
-            transform: translateY(-3px) scale(1.03); /* Subtle lift + tiny magnify */
-            background: hsl(0 0% 100% / 0.05); /* Slight lighten on hover */
         }
 
-        /* ✅ MANDATORY SVG FILTER - Powers Liquid Glass Effect (DO NOT REMOVE) */
-        svg {
-            position: absolute;
-            width: 0;
-            height: 0;
-            opacity: 0;
-            pointer-events: none;
+        .leftColumn { 
+            margin-bottom: .5em; 
+        }
+
+        /* Footer glass styling */
+        footer.glass {
+            border-radius: 16px;
+            margin-top: 2rem;
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        /* MEDIA QUERIES (preserve original responsive behavior) */
+        @media screen and (min-width: 47.5em) {
+            .leftColumn { 
+                margin-right: 19.5em; 
+            }
+
+            .rightColumn { 
+                position: absolute; 
+                top: 0; 
+                right: 0; 
+                width: 18.75em; 
+            }   
         }
     </style>
 </head>
+  
 <body>
-    <!-- SVG Filter for Liquid Glass Effect (REQUIRED) -->
+    <!-- Mandatory SVG Filter for Liquid Glass Effect -->
     <svg>
         <filter id="glass-filter">
             <feGaussianBlur stdDeviation="8" result="blur" />
-            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 18 -7" result="glass" />
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="glass" />
             <feComposite in="SourceGraphic" in2="glass" operator="over" />
         </filter>
     </svg>
 
-    <!-- Fixed Top Nav Bar: Uses .button class for liquid glass effect -->
-    <div class="top-nav button">
-        <div class="glass-surface__filter"></div>
-        <button class="nav-btn">Home</button>
-        <button class="nav-btn">About</button>
-        <button class="nav-btn">Services</button>
-        <button class="nav-btn">Contact</button>
-    </div>
-
-    <!-- Standalone Central Buttons: Each uses .button class for liquid glass effect -->
-    <div class="central-buttons">
-        <button class="central-btn button">
-            <div class="glass-surface__filter"></div>
-            Start Now
-        </button>
-        <button class="central-btn button">
-            <div class="glass-surface__filter"></div>
-            Learn More
-        </button>
-    </div>
-
-    <!-- Example: Add ANY element with .button class to get liquid glass effect -->
-    <!-- <button class="button" style="position: fixed; bottom: 20px; right: 20px; padding: 0.8rem 1.5rem; color: white;">New Glass Button</button> -->
-</body>
-</html>
+    <h1>Responsive Two Column Layout (Left Column Fluid + Liquid Glass Nav)</h1>
     
-  </body>
-  
+    <!-- Liquid Glass Nav Bar (fixed top, fit-to-text) -->
+    <header>
+        <nav class="glass">
+            <div class="glass-surface__filter"></div>
+            <ul class="nav inline-items">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Photos</a></li>
+                <li><a href="#">My Trips</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Two-Column Layout (with glass styling for content containers) -->
+    <div class="columnsContainer">
+        <div class="leftColumn glass">
+            <div class="glass-surface__filter"></div>
+            <h2>Left Column (fluid)</h2>
+            <p>Bacon ipsum dolor sit amet capicola ball tip beef ribs leberkas, turkey biltong salami shoulder ribeye. Leberkas chuck cow andouille kevin ribeye pork strip steak pork chop beef ribs beef ball tip corned beef. Leberkas prosciutto brisket, short ribs salami cow sirloin chicken. Bacon pork belly bresaola tenderloin biltong leberkas. Strip steak beef leberkas sirloin, venison turkey hamburger kevin. Drumstick chicken ground round t-bone flank fatback jerky ball tip. Jerky ribeye sirloin t-bone.</p>
+            <p>Tongue prosciutto pork ball tip ham hock, meatball sirloin brisket kielbasa biltong doner shoulder bresaola. Chuck beef ribs biltong, kielbasa ground round swine andouille corned beef. Venison hamburger tongue shank. Leberkas doner pork chop sausage kielbasa pancetta, biltong brisket pastrami tenderloin boudin filet mignon sirloin cow meatloaf. Ham ball tip bacon pork belly sirloin.</p>
+            <p>Shoulder pig short ribs, salami chicken venison bresaola. Frankfurter meatball pork chop pork loin, turkey strip steak kielbasa pork belly drumstick shank prosciutto. Pork chicken ground round, sirloin tri-tip ham hock pork chop cow meatloaf pork loin bresaola turkey. Prosciutto hamburger pork short ribs flank tri-tip chicken pig bacon meatloaf t-bone shankle doner. Bresaola doner spare ribs biltong jowl boudin, tri-tip pork leberkas ham hock filet mignon.</p>
+            <p>Leberkas strip steak shoulder meatball, flank biltong shank fatback ball tip swine prosciutto hamburger. Jerky frankfurter drumstick, ham ham hock hamburger kevin kielbasa salami chuck. Flank rump beef cow, beef ribs meatball ball tip jowl bacon pork chop. Biltong tongue pork chop hamburger. Frankfurter tri-tip pancetta pork chop venison t-bone andouille beef ribs salami boudin meatball doner spare ribs. Brisket pork chop pig kielbasa jerky chuck pork belly beef meatball boudin short loin. Doner jerky andouille ham meatloaf prosciutto kevin pork belly short loin pancetta.</p>
+            <p>Corned beef spare ribs hamburger pork tenderloin flank pork loin beef ribs sausage brisket chicken venison bacon short loin sirloin. Ribeye tail short ribs andouille kevin chicken shankle meatloaf, corned beef rump sirloin t-bone chuck tongue. Swine venison tongue, sirloin turducken drumstick bresaola strip steak rump. Kevin ham hock meatball tri-tip. Ground round leberkas pig beef salami strip steak meatball beef ribs. Chicken ball tip rump, short loin bresaola pork t-bone jerky jowl pork chop tail chuck sausage prosciutto.</p>
+        </div>
+
+        <div class="rightColumn glass">
+            <div class="glass-surface__filter"></div>
+            <h2>Right Column</h2>
+            <p>Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit​​, morbo vel maleficia? De apocalypsi gorger omero undead survivor dictum mauris. Hi mindless mortuis soulless creaturas, imo evil stalking monstra adventus resi dentevil vultus comedat cerebella viventium. Qui animated corpse, cricket bat max brucks terribilem incessu zomby. The voodoo sacerdos flesh eater, suscitat mortuos comedere carnem virus. Zonbi tattered for solum oculi eorum defunctis go lum cerebro. Nescio brains an Undead zombies. Sicut malus putrid voodoo horror. Nigh tofth eliv ingdead.</p>
+        </div>
+    </div>
+    
+    <!-- Glass-styled Footer -->
+    <footer class="glass">
+        <div class="glass-surface__filter"></div>
+        <p><a href="#">Contact Us</a> | <a href="#">Sitemap</a> | <a href="#">Privacy Policy</a></p>
+        <p>&copy;2014 Copyright info here...</p>
+    </footer>
+</body>
 </html>
