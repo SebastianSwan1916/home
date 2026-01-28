@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liquid Glass Two-Column Layout</title>
+    <title>Liquid Glass Two-Column Layout | Blurred Nav</title>
     <style>
         /* ===== BASE RESET + GLOBAL STYLES ===== */
         *, *:before, *:after {
@@ -15,17 +15,16 @@
         body { 
             margin: 0; 
             min-height: 100vh;
-            /* ===== FIXED FULL-SCREEN BACKGROUND IMAGE (YOUR CUSTOM IMAGE) ===== */
-            background-image: url('YOUR_IMAGE_URL_HERE'); /* REPLACE THIS WITH YOUR IMAGE PATH/URL */
-            background-attachment: fixed; /* Critical: Image stays STATIC (no scroll with page) */
-            background-size: cover; /* Critical: Cover ENTIRE page, no white space */
-            background-position: center center; /* Center image on all screen sizes */
-            background-repeat: no-repeat; /* No image repetition */
-            background-color: #1a1a2e; /* Fallback color if image fails to load */
-            /* ===== END BACKGROUND IMAGE STYLES ===== */
+            /* Fixed full-screen background image */
+            background-image: url('YOUR_IMAGE_URL_HERE'); /* REPLACE WITH YOUR IMAGE */
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-color: #1a1a2e; /* Fallback */
             color: #f0f0f0; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding-top: 100px; /* Space for fixed glass nav bar */
+            padding-top: 100px; /* Space for fixed nav */
             overflow-x: hidden;
         }
 
@@ -33,7 +32,7 @@
             color: #ffffff;
             margin-bottom: 1rem;
             text-align: center;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.7); /* Add text shadow for readability on image */
+            text-shadow: 0 2px 8px rgba(0,0,0,0.7);
         }
 
         h1 {
@@ -43,7 +42,7 @@
         p {
             line-height: 1.6;
             margin-bottom: 1rem;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.6); /* Readability shadow for paragraph text */
+            text-shadow: 0 1px 4px rgba(0,0,0,0.6);
         }
 
         a {
@@ -70,6 +69,18 @@
             border: none;
         }
 
+        /* SEPARATE GLASS CLASS FOR **HIGH BLUR** NAV (KEY CHANGE) */
+        .glass-nav {
+            background: hsl(0 0% 0% / var(--glass-frost, 0));
+            -webkit-backdrop-filter: var(--filter-id,url(#glass-filter-nav)) saturate(var(--glass-saturation,1));
+            backdrop-filter: var(--filter-id, url(#glass-filter-nav)) saturate(var(--glass-saturation, 1));
+            box-shadow: inset 0 0 4px 2px #ffffff66, inset 0 0 16px 6px #ffffff33, inset 0 4px 20px #1111a044, inset 0 8px 28px #1111a044, inset 0 6px 60px #1111a044;
+            border-radius: 9999px; /* Full rounded for nav */
+            position: relative;
+            pointer-events: auto;
+            border: none;
+        }
+
         .glass-surface__filter {
             pointer-events: none;
             opacity: 0;
@@ -80,7 +91,7 @@
             inset: 0;
         }
 
-        /* ===== MANDATORY SVG FILTER (POWERS LIQUID GLASS) ===== */
+        /* ===== MANDATORY SVG FILTERS (2 FILTERS: NORMAL + HIGH BLUR FOR NAV) ===== */
         svg {
             position: absolute;
             width: 0;
@@ -89,7 +100,7 @@
             pointer-events: none;
         }
 
-        /* ===== NAVIGATION (LIQUID GLASS STYLE - FIT-TO-TEXT, FIXED TOP) ===== */
+        /* ===== NAVIGATION (HIGH BLUR LIQUID GLASS - FIT-TO-TEXT, FIXED TOP) ===== */
         header {
             position: fixed;
             top: 20px;
@@ -100,17 +111,16 @@
             margin: 0;
         }
 
-        nav.glass {
+        nav.glass-nav {
             height: 70px;
-            display: inline-flex; /* Fit nav to text/content (no full-width stretch) */
+            display: inline-flex; /* Fit to text - NO full-width stretch */
             justify-content: center;
             align-items: center;
             gap: 2.5rem; /* Spacing between nav items */
             padding: 0 2.5rem; /* Internal spacing */
-            --glass-frost: 0.12;
-            --glass-saturation: 1.4;
-            border-radius: 9999px; /* Full rounded nav */
-            white-space: nowrap; /* Prevent nav item wrapping */
+            --glass-frost: 0.2; /* HIGHER FROST = DEEPER BLUR (key boost) */
+            --glass-saturation: 1.6; /* Slightly higher saturation for contrast */
+            white-space: nowrap; /* Prevent wrapping on small screens */
         }
 
         .nav {
@@ -142,7 +152,7 @@
             transform-origin: center;
             padding: 0.5rem 0;
             display: inline-block;
-            text-shadow: none; /* No shadow for nav links (glass contrast is enough) */
+            text-shadow: 0 1px 5px rgba(0,0,0,0.8); /* Darker shadow for nav links (blur contrast) */
         }
 
         nav a:hover {
@@ -176,6 +186,8 @@
             text-align: center;
             padding: 1.5rem;
             max-width: 1200px;
+            --glass-frost: 0.08;
+            --glass-saturation: 1.2;
         }
 
         /* ===== MEDIA QUERIES (RESPONSIVE ADJUSTMENTS) ===== */
@@ -195,7 +207,7 @@
         }
 
         @media screen and (max-width: 47.4em) {
-            nav.glass {
+            nav.glass-nav {
                 gap: 1.5rem;
                 padding: 0 1.5rem;
             }
@@ -206,27 +218,34 @@
                 font-size: 1rem;
             }
             h1 {
-                font-size: 1.8rem; /* Smaller title on mobile for readability */
+                font-size: 1.8rem;
             }
         }
     </style>
 </head>
   
 <body>
-    <!-- Mandatory SVG Filter for Liquid Glass Effect -->
+    <!-- MANDATORY SVG FILTERS: NORMAL (glass-filter) + HIGH BLUR (glass-filter-nav) -->
     <svg>
+        <!-- Original filter for columns/footer (mild blur) -->
         <filter id="glass-filter">
             <feGaussianBlur stdDeviation="8" result="blur" />
             <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="glass" />
             <feComposite in="SourceGraphic" in2="glass" operator="over" />
         </filter>
+        <!-- HIGH BLUR filter for nav bar (stdDeviation UP TO 18 = key change) -->
+        <filter id="glass-filter-nav">
+            <feGaussianBlur stdDeviation="18" result="blur" /> <!-- 2x+ blur vs original -->
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="glass" />
+            <feComposite in="SourceGraphic" in2="glass" operator="over" />
+        </filter>
     </svg>
 
-    <h1>Responsive Two Column Layout (Liquid Glass Nav + Fixed Background)</h1>
+    <h1>Responsive Two Column Layout | High Blur Glass Nav</h1>
     
-    <!-- Liquid Glass Nav (Fit-to-Text, Fixed Top) -->
+    <!-- HIGH BLUR Liquid Glass Nav Bar (Fit-to-Text, Fixed Top) -->
     <header>
-        <nav class="glass">
+        <nav class="glass-nav"> <!-- Use glass-nav class for high blur -->
             <div class="glass-surface__filter"></div>
             <ul class="nav inline-items">
                 <li><a href="#">Home</a></li>
@@ -237,7 +256,7 @@
         </nav>
     </header>
 
-    <!-- Two-Column Glass Layout -->
+    <!-- Two-Column Glass Layout (Original Mild Blur) -->
     <div class="columnsContainer">
         <div class="leftColumn glass">
             <div class="glass-surface__filter"></div>
@@ -255,7 +274,7 @@
         </div>
     </div>
     
-    <!-- Glass Footer -->
+    <!-- Glass Footer (Original Mild Blur) -->
     <footer class="glass">
         <div class="glass-surface__filter"></div>
         <p><a href="#">Contact Us</a> | <a href="#">Sitemap</a> | <a href="#">Privacy Policy</a></p>
