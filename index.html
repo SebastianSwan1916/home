@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liquid Glass Layout | Fit-to-Text Content</title>
+    <title>Liquid Glass Layout | Single Content Area</title>
     <style>
         /* ===== BASE RESET + GLOBAL STYLES ===== */
         *, *:before, *:after {
@@ -15,25 +15,24 @@
         body { 
             margin: 0; 
             min-height: 100vh;
-            /* Fixed full-screen background image (primary) + WHITE fallback (image fail) */
-            background-image: url('YOUR_IMAGE_URL_HERE'); /* REPLACE WITH YOUR IMAGE PATH/URL */
+            /* Fixed full-screen background image + white fallback */
+            background-image: url('YOUR_IMAGE_URL_HERE'); /* Replace with your image */
             background-attachment: fixed;
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
-            background-color: #ffffff; /* WHITE fallback - critical for image load failure */
-            color: #000000; /* BLACK text for all content - high contrast */
+            background-color: #ffffff; /* White fallback if image fails */
+            color: #000000; /* Black text */
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding-top: 100px; /* Space for fixed glass nav */
+            padding-top: 100px; /* Space for fixed nav */
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
-            align-items: center; /* Center all content containers (for fit-to-text) */
+            align-items: center;
             padding-left: 1rem;
             padding-right: 1rem;
         }
 
-        /* Headings + Paragraphs: BLACK text, no shadow (white fallback/image = high contrast) */
         h1, h2 {
             color: #000000;
             margin-bottom: 1rem;
@@ -44,7 +43,7 @@
         h1 {
             margin-bottom: 2rem;
             font-size: 2rem;
-            max-width: 800px; /* Limit title width (no full-screen stretch) */
+            max-width: 100%;
             width: 100%;
         }
 
@@ -52,9 +51,10 @@
             line-height: 1.6;
             margin-bottom: 1rem;
             color: #000000;
+            word-wrap: break-word; /* Force long words to wrap */
+            overflow-wrap: break-word;
         }
 
-        /* Links: Dark blue (high contrast, professional) */
         a {
             color: #0f3460;
             text-decoration: none;
@@ -71,24 +71,24 @@
             -webkit-backdrop-filter: var(--filter-id,url(#glass-filter)) saturate(var(--glass-saturation,1));
             backdrop-filter: var(--filter-id, url(#glass-filter)) saturate(var(--glass-saturation, 1));
             box-shadow: inset 0 0 2px 1px #ffffff59, inset 0 0 10px 4px #ffffff26, 
-                        0 4px 12px rgba(0,0,0,0.1); /* Outer shadow for fit-to-text containers */
+                        0 4px 12px rgba(0,0,0,0.1);
             border-radius: 16px;
             position: relative;
             pointer-events: auto;
             border: none;
-            padding: 1.25em; /* Core padding for glass content */
+            padding: 1.25em;
             width: 100%;
-            max-width: fit-content; /* CRITICAL: Fit glass container to TEXT width */
+            max-width: calc(100% - 2rem); /* Prevent overflow */
+            margin-bottom: 2rem; /* Space between content and footer */
         }
 
-        /* Super-blur glass nav (dedicated class) */
         .glass-nav {
             background: hsl(0 0% 0% / var(--glass-frost, 0));
             -webkit-backdrop-filter: var(--filter-id,url(#glass-filter-nav)) saturate(var(--glass-saturation,1));
             backdrop-filter: var(--filter-id, url(#glass-filter-nav)) saturate(var(--glass-saturation, 1));
             box-shadow: inset 0 0 4px 2px #ffffff66, inset 0 0 16px 6px #ffffff33,
                         0 4px 12px rgba(0,0,0,0.15);
-            border-radius: 9999px; /* Full rounded nav */
+            border-radius: 9999px;
             position: relative;
             pointer-events: auto;
             border: none;
@@ -104,7 +104,7 @@
             inset: 0;
         }
 
-        /* ===== MANDATORY SVG FILTERS (NAV = SUPER BLUR | CONTENT = MILD BLUR) ===== */
+        /* ===== MANDATORY SVG FILTERS ===== */
         svg {
             position: absolute;
             width: 0;
@@ -113,7 +113,7 @@
             pointer-events: none;
         }
 
-        /* ===== SUPER-BLUR NAV BAR (FIXED TOP, FIT-TO-TEXT, CENTERED) ===== */
+        /* ===== SUPER-BLUR NAV BAR (FIXED TOP) ===== */
         header {
             position: fixed;
             top: 20px;
@@ -126,14 +126,14 @@
 
         nav.glass-nav {
             height: 70px;
-            display: inline-flex; /* Fit nav to text - NO full-width stretch */
+            display: inline-flex;
             justify-content: center;
             align-items: center;
-            gap: 2.5rem; /* Spacing between nav items */
-            padding: 0 2.5rem; /* Internal spacing */
-            --glass-frost: 0.2; /* High frost for super blur */
+            gap: 2.5rem;
+            padding: 0 2.5rem;
+            --glass-frost: 0.2;
             --glass-saturation: 1.6;
-            white-space: nowrap; /* Prevent wrapping on small screens */
+            white-space: nowrap;
         }
 
         .nav {
@@ -154,7 +154,6 @@
             padding: 0 !important;
         }
 
-        /* Nav links: White (high contrast with super-blur glass) */
         nav a {
             background: none;
             border: none;
@@ -170,53 +169,28 @@
 
         nav a:hover {
             color: #f0f0f0;
-            transform: scale(1.08); /* Subtle magnify */
+            transform: scale(1.08);
             text-decoration: none;
         }
 
-        /* ===== TWO-COLUMN LAYOUT (FIT-TO-TEXT, RESPONSIVE) ===== */
-        .columnsContainer { 
-            position: relative;
-            display: flex;
-            flex-direction: column; /* Stack on mobile, side-by-side on desktop */
-            gap: 1.5rem; /* Spacing between columns (fit-to-text) */
-            width: 100%;
-            max-width: 1200px; /* Max width for desktop (no full-screen stretch) */
-            margin-bottom: 2rem;
-        }
-
-        /* Content glass styling (mild blur for readability) */
-        .leftColumn, .rightColumn {
+        /* ===== SINGLE UNIFIED CONTENT AREA ===== */
+        .main-content {
             --glass-frost: 0.08;
             --glass-saturation: 1.2;
-            margin: 0;
+            max-width: 800px; /* Optimal width for readability (adjust as needed) */
         }
 
-        /* ===== FOOTER (FIT-TO-TEXT, GLASS STYLE) ===== */
+        /* ===== FOOTER ===== */
         footer.glass {
             --glass-frost: 0.08;
             --glass-saturation: 1.2;
             text-align: center;
             margin-top: 0;
-            max-width: 800px; /* Limit footer width (fit-to-text) */
+            max-width: 800px; /* Match content width */
+            margin-bottom: 2rem;
         }
 
-        /* ===== MEDIA QUERIES (RESPONSIVE FIT-TO-TEXT) ===== */
-        /* Desktop: Side-by-side columns (both fit text, no stretching) */
-        @media screen and (min-width: 47.5em) {
-            .columnsContainer {
-                flex-direction: row;
-                align-items: flex-start; /* Align column tops */
-                justify-content: center;
-            }
-            .leftColumn, .rightColumn {
-                flex: 0 0 auto; /* CRITICAL: Prevent column stretching */
-                max-width: fit-content; /* Keep fit-to-text */
-                width: auto;
-            }
-        }
-
-        /* Mobile: Reduce nav/content spacing (maintain fit-to-text) */
+        /* ===== MEDIA QUERIES (MOBILE ADJUSTMENTS) ===== */
         @media screen and (max-width: 47.4em) {
             nav.glass-nav {
                 gap: 1.5rem;
@@ -232,22 +206,20 @@
                 font-size: 1.8rem;
             }
             .glass {
-                max-width: 100%; /* Fit mobile screen (still no unnecessary stretch) */
+                max-width: 100%;
             }
         }
     </style>
 </head>
   
 <body>
-    <!-- MANDATORY SVG FILTERS: SUPER BLUR (NAV) | MILD BLUR (CONTENT) -->
+    <!-- SVG Filters for Liquid Glass Effect -->
     <svg>
-        <!-- Mild blur for content/footer (readability) -->
         <filter id="glass-filter">
             <feGaussianBlur stdDeviation="8" result="blur" />
             <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="glass" />
             <feComposite in="SourceGraphic" in2="glass" operator="over" />
         </filter>
-        <!-- SUPER blur for nav bar (stdDeviation=20 - max for readability) -->
         <filter id="glass-filter-nav">
             <feGaussianBlur stdDeviation="20" result="blur" />
             <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="glass" />
@@ -255,10 +227,10 @@
         </filter>
     </svg>
 
-    <!-- Main Title (Black Text, Centered, No Stretch) -->
-    <h1>Liquid Glass Layout | Fit-to-Text Content & Nav</h1>
+    <!-- Main Title -->
+    <h1>Liquid Glass Layout | Single Content Area</h1>
     
-    <!-- Super-Blur Glass Nav (Fixed Top, Fit-to-Text, Centered) -->
+    <!-- Fixed Super-Blur Nav Bar -->
     <header>
         <nav class="glass-nav">
             <div class="glass-surface__filter"></div>
@@ -271,25 +243,19 @@
         </nav>
     </header>
 
-    <!-- Two-Column Layout (FIT-TO-TEXT, Liquid Glass, Black Text) -->
-    <div class="columnsContainer">
-        <div class="leftColumn glass">
-            <div class="glass-surface__filter"></div>
-            <h2>Left Column (Fit-to-Text)</h2>
-            <p>Bacon ipsum dolor sit amet capicola ball tip beef ribs leberkas, turkey biltong salami shoulder ribeye. Leberkas chuck cow andouille kevin ribeye pork strip steak pork chop beef ribs beef ball tip corned beef.</p>
-            <p>Leberkas prosciutto brisket, short ribs salami cow sirloin chicken. Bacon pork belly bresaola tenderloin biltong leberkas. Strip steak beef leberkas sirloin, venison turkey hamburger kevin.</p>
-            <p>Drumstick chicken ground round t-bone flank fatback jerky ball tip. Jerky ribeye sirloin t-bone.</p>
-        </div>
-
-        <div class="rightColumn glass">
-            <div class="glass-surface__filter"></div>
-            <h2>Right Column (Fit-to-Text)</h2>
-            <p>Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit​​, morbo vel maleficia?</p>
-            <p>De apocalypsi gorger omero undead survivor dictum mauris. Hi mindless mortuis soulless creaturas, imo evil stalking monstra adventus resi dentevil vultus comedat cerebella viventium.</p>
-        </div>
+    <!-- Single Unified Glass Content Area (Combined Text) -->
+    <div class="main-content glass">
+        <div class="glass-surface__filter"></div>
+        <h2>Main Content Area</h2>
+        <!-- Combined text from both original columns -->
+        <p>Bacon ipsum dolor sit amet capicola ball tip beef ribs leberkas, turkey biltong salami shoulder ribeye. Leberkas chuck cow andouille kevin ribeye pork strip steak pork chop beef ribs beef ball tip corned beef.</p>
+        <p>Leberkas prosciutto brisket, short ribs salami cow sirloin chicken. Bacon pork belly bresaola tenderloin biltong leberkas. Strip steak beef leberkas sirloin, venison turkey hamburger kevin.</p>
+        <p>Drumstick chicken ground round t-bone flank fatback jerky ball tip. Jerky ribeye sirloin t-bone.</p>
+        <p>Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit​​, morbo vel maleficia?</p>
+        <p>De apocalypsi gorger omero undead survivor dictum mauris. Hi mindless mortuis soulless creaturas, imo evil stalking monstra adventus resi dentevil vultus comedat cerebella viventium.</p>
     </div>
     
-    <!-- Fit-to-Text Glass Footer (Black Text, Centered) -->
+    <!-- Glass Footer -->
     <footer class="glass">
         <div class="glass-surface__filter"></div>
         <p><a href="#">Contact Us</a> | <a href="#">Sitemap</a> | <a href="#">Privacy Policy</a></p>
