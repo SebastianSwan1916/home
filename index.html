@@ -213,16 +213,71 @@
             .glass {
                 max-width: 100%;
             }
+            /* Based on your original CSS + 3 key optimized properties */
             .snowflake {
+                color: #fff;
+                font-size: 1em;
+                font-family: Arial, sans-serif;
+                text-shadow: 0 0 0px #ffffff;
                 position: fixed;
-                top: -10px; /* 初始在视口上方，避免刚生成时闪烁 */
-                z-index: 9999; /* 确保雪花在所有内容上方 */
-                color: #fff; /* 雪花白色，可根据页面调整 */
-                opacity: 0.8;
-                pointer-events: none; /* 不遮挡页面点击事件 */
-                transition: opacity 0.5s ease-out; /* 消失时平滑过渡 */
-                font-size: 16px; /* 雪花基础大小 */
+                top: -10%;
+                z-index: 9999;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                cursor: default;
+            /* 3 KEY OPTIMIZATIONS (MUST KEEP) */
+                pointer-events: none; /* ❗ No block page clicks/buttons/links */
+                opacity: 0.8; /* Soft snow effect, more natural */
+                transform: translateZ(0); /* Hardware acceleration, smoother animation */
             }
+
+            /* Your original keyframes (unchanged, webkit + standard prefix) */
+            @-webkit-keyframes snowflakes-fall {
+                  0% { top: -10% }
+                  100% { top: 100% }
+            }
+            @-webkit-keyframes snowflakes-shake {
+                  0%, 100% { -webkit-transform: translateX(0); transform: translateX(0) }
+                  50% { -webkit-transform: translateX(80px); transform: translateX(80px) }
+            }
+            @keyframes snowflakes-fall {
+                  0% { top: -10% }
+                  100% { top: 100% }
+            }
+@keyframes snowflakes-shake {
+  0%, 100% { transform: translateX(0) }
+  50% { transform: translateX(80px) }
+}
+
+/* Your original animation properties (unchanged) */
+.snowflake {
+  -webkit-animation-name: snowflakes-fall, snowflakes-shake;
+  -webkit-animation-duration: 10s, 3s;
+  -webkit-animation-timing-function: linear, ease-in-out;
+  -webkit-animation-iteration-count: infinite, infinite;
+  -webkit-animation-play-state: running, running;
+  animation-name: snowflakes-fall, snowflakes-shake;
+  animation-duration: 10s, 3s;
+  animation-timing-function: linear, ease-in-out;
+  animation-iteration-count: infinite, infinite;
+  animation-play-state: running, running;
+}
+
+/* Your original nth-of-type positioning/delay (unchanged) */
+.snowflake:nth-of-type(0) { left: 1%; -webkit-animation-delay: 0s, 0s; animation-delay: 0s, 0s; }
+.snowflake:nth-of-type(1) { left: 10%; -webkit-animation-delay: 1s, 1s; animation-delay: 1s, 1s; }
+.snowflake:nth-of-type(2) { left: 20%; -webkit-animation-delay: 6s, .5s; animation-delay: 6s, .5s; }
+.snowflake:nth-of-type(3) { left: 30%; -webkit-animation-delay: 4s, 2s; animation-delay: 4s, 2s; }
+.snowflake:nth-of-type(4) { left: 40%; -webkit-animation-delay: 2s, 2s; animation-delay: 2s, 2s; }
+.snowflake:nth-of-type(5) { left: 50%; -webkit-animation-delay: 8s, 3s; animation-delay: 8s, 3s; }
+.snowflake:nth-of-type(6) { left: 60%; -webkit-animation-delay: 6s, 2s; animation-delay: 6s, 2s; }
+.snowflake:nth-of-type(7) { left: 70%; -webkit-animation-delay: 2.5s, 1s; animation-delay: 2.5s, 1s; }
+.snowflake:nth-of-type(8) { left: 80%; -webkit-animation-delay: 1s, 0s; animation-delay: 1s, 0s; }
+.snowflake:nth-of-type(9) { left: 90%; -webkit-animation-delay: 3s, 1.5s; animation-delay: 3s, 1.5s; }
+.snowflake:nth-of-type(10) { left: 25%; -webkit-animation-delay: 2s, 0s; animation-delay: 2s, 0s; }
+.snowflake:nth-of-type(11) { left: 65%; -webkit-animation-delay: 4s, 2.5s; animation-delay: 4s, 2.5s; }
         }
     </style>
 </head>
@@ -277,47 +332,21 @@
         <p>&copy; 2025 Your Site Name | All Rights Reserved</p>
     </footer>
 
-<script>
-        // 雪花飘落核心逻辑
-        function createSnowflake() {
-            // 1. 创建雪花元素，添加类名和雪花表情
-            const snowflake = document.createElement('div');
-            snowflake.classList.add('snowflake');
-            snowflake.textContent = '❄️'; // 雪花表情，可替换为☃️/❅等
+<div class="snowflakes" aria-hidden="true">
+  <div class="snowflake">❄️</div>
+  <div class="snowflake">❄️</div>
+  <div class="snowflake">❄️</div>
+  <div class="snowflake">❄️</div>
+  <div class="snowflake">❄️</div>
+  <div class="snowflake">❄️</div>
+  <div class="snowflake">❄️</div>
+  <div class="snowflake">❄️</div>
+  <div class="snowflake">❄️</div>
+  <div class="snowflake">❄️</div>
+  <div class="snowflake">❄️</div>
+  <div class="snowflake">❄️</div>
+</div>
 
-            // 2. 随机设置雪花水平位置（基于页面宽度）
-            const screenWidth = window.innerWidth;
-            const randomX = Math.random() * screenWidth;
-            snowflake.style.left = `${randomX}px`;
-
-            // 3. 随机雪花大小（12px-24px），增加层次感
-            const randomSize = 12 + Math.random() * 12;
-            snowflake.style.fontSize = `${randomSize}px`;
-
-            // 4. 随机飘落动画时长（3s-8s），快慢不一更自然
-            const fallDuration = 3 + Math.random() * 5;
-            snowflake.style.transition = `top ${fallDuration}s linear, opacity 0.5s ease-out`;
-
-            // 5. 触发飘落：设置最终top值为页面高度（超出视口底部）
-            setTimeout(() => {
-                snowflake.style.top = `${window.innerHeight}px`;
-            }, 10); // 短暂延迟确保样式生效
-
-            // 6. 雪花落地后移除元素，避免DOM冗余
-            setTimeout(() => {
-                snowflake.style.opacity = 0; // 先透明再移除，更平滑
-                setTimeout(() => {
-                    snowflake.remove();
-                }, 500);
-            }, fallDuration * 1000);
-
-            // 7. 将雪花添加到页面
-            document.body.appendChild(snowflake);
-        }
-
-        // 持续生成雪花：每300ms生成一个，可调整频率（数值越小雪花越密）
-        setInterval(createSnowflake, 300);
-    </script>
     
 </body>
 </html>
