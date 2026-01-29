@@ -213,6 +213,16 @@
             .glass {
                 max-width: 100%;
             }
+            .snowflake {
+                position: fixed;
+                top: -10px; /* 初始在视口上方，避免刚生成时闪烁 */
+                z-index: 9999; /* 确保雪花在所有内容上方 */
+                color: #fff; /* 雪花白色，可根据页面调整 */
+                opacity: 0.8;
+                pointer-events: none; /* 不遮挡页面点击事件 */
+                transition: opacity 0.5s ease-out; /* 消失时平滑过渡 */
+                font-size: 16px; /* 雪花基础大小 */
+            }
         }
     </style>
 </head>
@@ -266,5 +276,48 @@
         <p><a href="#">Contact Us</a> | <a href="#">Sitemap</a> | <a href="#">Privacy Policy</a></p>
         <p>&copy; 2025 Your Site Name | All Rights Reserved</p>
     </footer>
+
+<script>
+        // 雪花飘落核心逻辑
+        function createSnowflake() {
+            // 1. 创建雪花元素，添加类名和雪花表情
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.textContent = '❄️'; // 雪花表情，可替换为☃️/❅等
+
+            // 2. 随机设置雪花水平位置（基于页面宽度）
+            const screenWidth = window.innerWidth;
+            const randomX = Math.random() * screenWidth;
+            snowflake.style.left = `${randomX}px`;
+
+            // 3. 随机雪花大小（12px-24px），增加层次感
+            const randomSize = 12 + Math.random() * 12;
+            snowflake.style.fontSize = `${randomSize}px`;
+
+            // 4. 随机飘落动画时长（3s-8s），快慢不一更自然
+            const fallDuration = 3 + Math.random() * 5;
+            snowflake.style.transition = `top ${fallDuration}s linear, opacity 0.5s ease-out`;
+
+            // 5. 触发飘落：设置最终top值为页面高度（超出视口底部）
+            setTimeout(() => {
+                snowflake.style.top = `${window.innerHeight}px`;
+            }, 10); // 短暂延迟确保样式生效
+
+            // 6. 雪花落地后移除元素，避免DOM冗余
+            setTimeout(() => {
+                snowflake.style.opacity = 0; // 先透明再移除，更平滑
+                setTimeout(() => {
+                    snowflake.remove();
+                }, 500);
+            }, fallDuration * 1000);
+
+            // 7. 将雪花添加到页面
+            document.body.appendChild(snowflake);
+        }
+
+        // 持续生成雪花：每300ms生成一个，可调整频率（数值越小雪花越密）
+        setInterval(createSnowflake, 300);
+    </script>
+    
 </body>
 </html>
